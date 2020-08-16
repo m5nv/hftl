@@ -1,26 +1,54 @@
-import React from 'react';
-import logo from './logo.svg';
+import React from "react";
+import { useForm } from "react-hook-form";
 import './App.css';
 
-function App() {
+export default function App({ login }) {
+  const { register, handleSubmit, errors, reset } = useForm();
+  const onSubmit = async data => {
+    await login(data.email, data.password);
+    reset();
+  };
+
+  // console.log(errors);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <section>
+        <h1>Login</h1>
+        <label htmlFor="email">email</label>
+        <input
+          id="email"
+          name="email"
+          aria-invalid={errors.email ? "true" : "false"}
+          ref={register({
+            required: "required",
+            pattern: {
+              value: /\S+@\S+\.\S+/,
+              message: "Entered value does not match email format"
+            }
+          })}
+          type="email"
+          placeholder="example@mail.com"
+        />
+        {errors.email && <span role="alert">{errors.email.message}</span>}
+        <label htmlFor="password">password</label>
+        <input
+          id="password"
+          name="password"
+          aria-invalid={errors.passward ? "true" : "false"}
+          ref={register({
+            required: "required",
+            minLength: {
+              value: 5,
+              message: "min length is 5"
+            }
+          })}
+          type="password"
+          placeholder="password"
+        />
+        {errors.password && <span role="alert">{errors.password.message}</span>}
+      </section>
+      <button type="submit">SUBMIT</button>
+    </form>
   );
 }
-
-export default App;
