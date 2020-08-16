@@ -1,5 +1,6 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import userEvent from '@testing-library/user-event';
 import App from "./App";
 
 const mockLogin = jest.fn((email, password) => {
@@ -18,7 +19,55 @@ describe("App", () => {
     expect(mockLogin).not.toBeCalled();
   });
 
+  xit("should display matching error when email is invalid", async () => {
+    const textBox = screen.getByRole("textbox", { name: /email/i });
+    const password = screen.getByLabelText("password");
+    const submit = screen.getByRole("button");
+
+    screen.debug(textBox);
+    userEvent.type(textBox, "test");
+    userEvent.type(password, "password");
+
+    screen.debug(textBox);
+    userEvent.click(submit);
+
+    expect(await screen.findAllByRole("alert")).toHaveLength(1);
+    expect(mockLogin).not.toBeCalled();
+    expect(screen.getByRole("textbox", { name: /email/i }).value).toBe("test");
+    expect(screen.getByLabelText("password").value).toBe("password");
+  });
+
   it("should display matching error when email is invalid", async () => {
+    const textBox = screen.getByRole("textbox", { name: /email/i });
+    const password = screen.getByLabelText("password");
+    const submit = screen.getByRole("button");
+
+    console.log('>before "typing" in {mode: "onChange"}');
+    screen.debug(textBox);
+    screen.debug(password);
+    fireEvent.input(textBox, { target: { value: "test" } });
+    fireEvent.input(password, { target: { value: "password" } });
+    
+    console.log('> after "typing", before "clicking in {mode: "onChange"}');
+    screen.debug(textBox);
+    screen.debug(password);
+    fireEvent.submit(submit);
+
+    console.log('> after "typing", after "clicking in {mode: "onChange"}');
+    screen.debug(textBox);
+    screen.debug(password);
+
+    expect(await screen.findAllByRole("alert")).toHaveLength(1);
+    expect(mockLogin).not.toBeCalled();
+
+    // This test will fail with RHF but passes with Formik!
+    // expect(textBox).toHaveAttribute('value');
+
+    expect(textBox.value).toBe("test");
+    expect(password.value).toBe("password");
+  });
+
+  xit("should display matching error when email is invalid", async () => {
     fireEvent.input(screen.getByRole("textbox", { name: /email/i }), {
       target: {
         value: "test"

@@ -3,7 +3,11 @@ import { useForm } from "react-hook-form";
 import './App.css';
 
 export default function App({ login }) {
-  const { register, handleSubmit, errors, reset } = useForm();
+  const { register, handleSubmit, errors, reset } = useForm(
+    {
+      mode: 'onChange'
+    }
+  );
   const onSubmit = async data => {
     await login(data.email, data.password);
     reset();
