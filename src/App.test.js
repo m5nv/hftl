@@ -97,6 +97,15 @@ describe("App", () => {
   });
 
   it("should NOT reset AND display server validation errors", async () => {
+    const mockLogin2 = jest.fn((email, password) => {
+      // return Promise.reject({credentials: 'email or password is invalid' });
+      return new Promise(( _, reject) => {
+        setTimeout(() => {
+          reject({credentials: 'email or password is invalid' });
+        }, 500);
+      });
+    });
+    
     renderForm(mockLogin2);
     const {email, password, submit} = subjectsUnderTest();
 
