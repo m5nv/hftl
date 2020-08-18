@@ -9,34 +9,28 @@ import * as serviceWorker from './serviceWorker';
 ReactDOM.render(
   <React.StrictMode>
     <App login={login} />
-    <hr />
-    <div>
-    <h3>What does this app demonstrate?</h3>
-    <p>
-      This is a minimal app that demonstrates failure condition when
-      using React Hook Form + React Testing Library.
-
-      The App itself is functioning as designed. Try it by clicking around
-      and filling in junk values. The proper credentials are 'test@mail.com'
-      and 'password'.
-      
-      All the likely scenarious work in browser. Specifically:
+    <hr className="main"/>
+    <div className="main">
+    <h3 className="main">What does this app demonstrate?</h3>
+    <p className="main">
+      This is a minimal app was constructed to understand how RHF and RTL
+      can be used together.
     </p>
-    <ul>
-      <li>✓ should display required error when value is invalid</li>
-      <li>✓ should display matching error when email is invalid</li>
-      <li>✓ should display min length error when password is invalid</li>
-      <li>✓ should display no errors AND reset when accepted by server</li>
-      <li>✓ should NOT reset AND display server validation errors</li>   
-    </ul>
-    <p>
-      What is the issue? The last scenario fails in test :-( These same tests
-      pass when using Formik!
+    <ol className="main">
+      <li> combining React Hook Form with React Testing Library</li>
+      <li> use of userEvent instead of fireEvent in React Testing Library </li>
+      <li> one approach to handling async form submit </li>
+      <li> how to handle server side validation errors that don't map to form fields</li>
+      <li> #2 and #3 are required knowledge if porting from Formik to React Hook Form </li>
+      <li> Jest mock work around, thanks to @keiya01</li>
+    </ol>
+    <p className="main">
+    First try filling in the form with incorrect email and different lengths
+    for password, and observe form behavior. Then use proper credentials.
+    The correct email/password values are 'test@mail.com' and 'password'. 
+    <br /> <br />
+    The code for this demo is derived from RHF documentation. Thanks to @bluebill1049
     </p>
-    <ul>
-      <li>✕ should NOT reset AND display server validation errors
-      </li>
-    </ul>
   </div>
   </React.StrictMode>,
   document.getElementById('root')
